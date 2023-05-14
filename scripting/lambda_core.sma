@@ -34,9 +34,9 @@
 //--------------------------------
 
 #define PLUGIN	"Lambda Core"
-#define VERSION "0.6"
-#define LASTUPDATE "30, December (12), 2010"
-#define AUTHOR "KORD_12.7" // icq 563668196
+#define VERSION "1.0"
+#define LASTUPDATE "14, May (5), 2023"
+#define AUTHOR "bariscodefx"
 
 #define MAX_PLAYERS		32
 #define MAX_BUFFER_LENGTH	2047
@@ -269,10 +269,6 @@ public plugin_init()
 	RegisterHam(Ham_Spawn, "player", "fw_PlayerSpawn", 1)
 	RegisterHam(Ham_TakeDamage, "player", "fw_PlayerTakeDamage")
 	RegisterHam(Ham_Killed, "player", "fw_PlayerKilled")
-	RegisterHam(Ham_Weapon_PrimaryAttack,"weapon_gauss", "fw_GaussPrimaryAttack", 1)
-	RegisterHam(Ham_Weapon_PrimaryAttack,"weapon_egon", "fw_EgonPrimaryAttack", 1)
-	RegisterHam(Ham_Weapon_SendWeaponAnim,"weapon_gauss", "fw_GaussSecondaryAttack", 1)
-	RegisterHam(Ham_Weapon_SendWeaponAnim,"weapon_handgrenade", "fw_HandgrenadeAttack", 1)
 	
 	register_forward(FM_ClientUserInfoChanged, "fwClientUserInfoChanged")
 	register_forward(FM_PlaybackEvent, "fwPlaybackEvent")
@@ -428,7 +424,7 @@ public fnForwardSysError()
 
 public plugin_end()
 {
-	// Уничтожаем массив и деревья для освобождения памяти
+	// Г“Г­ГЁГ·ГІГ®Г¦Г ГҐГ¬ Г¬Г Г±Г±ГЁГў ГЁ Г¤ГҐГ°ГҐГўГјГї Г¤Г«Гї Г®Г±ГўГ®ГЎГ®Г¦Г¤ГҐГ­ГЁГї ГЇГ Г¬ГїГІГЁ
 	if(get_pcvar_num(g_enableRanksCvar))
 	{
 		ArraySort(g_ArrayAuth, "RANKS_SORTING")
@@ -451,7 +447,7 @@ public plugin_end()
 	DestroyForward(g_DamageForward)
 }
 
-public CmdReset(id, level, cid) // Сброс статы
+public CmdReset(id, level, cid) // Г‘ГЎГ°Г®Г± Г±ГІГ ГІГ»
 {
 	if(!cmd_access(id, level, cid, 1))
 		return PLUGIN_HANDLED
@@ -940,9 +936,9 @@ format_statsme(id, motd[MAX_BUFFER_LENGTH])
 	{
 		if(lc_get_user_wstats(id, i, stats, bodyhits))
 		{
-			hl_get_wpnname(i, wpn, charsmax(wpn)) // Название оружия
+			hl_get_wpnname(i, wpn, charsmax(wpn)) // ГЌГ Г§ГўГ Г­ГЁГҐ Г®Г°ГіГ¦ГЁГї
 			
-			switch(i) // Для лучшей смотрибельности выбираем отступ (кол-во пробелов после названия оружия)
+			switch(i) // Г„Г«Гї Г«ГіГ·ГёГҐГ© Г±Г¬Г®ГІГ°ГЁГЎГҐГ«ГјГ­Г®Г±ГІГЁ ГўГ»ГЎГЁГ°Г ГҐГ¬ Г®ГІГ±ГІГіГЇ (ГЄГ®Г«-ГўГ® ГЇГ°Г®ГЎГҐГ«Г®Гў ГЇГ®Г±Г«ГҐ Г­Г Г§ГўГ Г­ГЁГї Г®Г°ГіГ¦ГЁГї)
 			{
 				case HLW_CROWBAR: t = 12
 				case OP4_WRENCH: t = 8
@@ -976,11 +972,11 @@ format_statsme(id, motd[MAX_BUFFER_LENGTH])
 				case OP4_SHOCKBEAM: t = 10
 			}
 			
-			// Собственно сам отступ
+			// Г‘Г®ГЎГ±ГІГўГҐГ­Г­Г® Г±Г Г¬ Г®ГІГ±ГІГіГЇ
 			for(k = 0; k < t - 1; k++)
 				add(wpn, charsmax(wpn), " ")
 				
-			// Стата по использованому оружию
+			// Г‘ГІГ ГІГ  ГЇГ® ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ Г­Г®Г¬Гі Г®Г°ГіГ¦ГЁГѕ
 			len += formatex(motd[len], charsmax(motd) - len, "%s %d %8d %5d %7d %8d %8.2f%%^n", 
 				wpn, stats[0], stats[1], stats[5], stats[4], stats[6], accuracy(stats))	
 		}
@@ -1037,7 +1033,7 @@ handle_me(id)
 	return PLUGIN_CONTINUE
 }
 
-handle_report(id) // Репорт о состоянии игрока
+handle_report(id) // ГђГҐГЇГ®Г°ГІ Г® Г±Г®Г±ГІГ®ГїГ­ГЁГЁ ГЁГЈГ°Г®ГЄГ 
 {
 	if(!SayReport)
 	{
@@ -1045,16 +1041,16 @@ handle_report(id) // Репорт о состоянии игрока
 		return PLUGIN_HANDLED_MAIN
 	}
 	
-	if(hl_is_user_spectator(id)) // Юзер в режиме спектатора
+	if(hl_is_user_spectator(id)) // ГћГ§ГҐГ° Гў Г°ГҐГ¦ГЁГ¬ГҐ Г±ГЇГҐГЄГІГ ГІГ®Г°Г 
 	{
 		engclient_cmd(id, "say_team", "SPECTATOR")
 		return PLUGIN_CONTINUE
 	}
 	
 	new sBuffer[200]
-	if(is_user_alive(id)) // Игрок жив
+	if(is_user_alive(id)) // Г€ГЈГ°Г®ГЄ Г¦ГЁГў
 	{
-		// Узнаем кол-во хелсов и брони, ид оружия и его ентити ид
+		// Г“Г§Г­Г ГҐГ¬ ГЄГ®Г«-ГўГ® ГµГҐГ«Г±Г®Гў ГЁ ГЎГ°Г®Г­ГЁ, ГЁГ¤ Г®Г°ГіГ¦ГЁГї ГЁ ГҐГЈГ® ГҐГ­ГІГЁГІГЁ ГЁГ¤
 		new iHealth = get_user_health(id) 
 		new iArmor = get_user_armor(id)
 		new iWeapon = get_user_weapon(id)
@@ -1062,14 +1058,14 @@ handle_report(id) // Репорт о состоянии игрока
 		new LGstr[11]; if(fm_get_user_longjump(id)) LGstr = "- Longjump"
 		new iClip, iAmmo, sWeapon[24]; hl_get_wpnname(iWeapon, sWeapon, charsmax(sWeapon))
 		
-		// У игрока в руках оружие, получаем кол-во патронов в обойме и запасе
+		// Г“ ГЁГЈГ°Г®ГЄГ  Гў Г°ГіГЄГ Гµ Г®Г°ГіГ¦ГЁГҐ, ГЇГ®Г«ГіГ·Г ГҐГ¬ ГЄГ®Г«-ГўГ® ГЇГ ГІГ°Г®Г­Г®Гў Гў Г®ГЎГ®Г©Г¬ГҐ ГЁ Г§Г ГЇГ Г±ГҐ
 		if(weapent > 0) 
 		{
 			iClip = hl_get_weapon_ammo(weapent)
 			iAmmo = hl_get_user_bpammo(id, iWeapon)
 		}
 		
-		if(iClip >= 0) // Оружие имеет обойму (пистолеты и т.п)
+		if(iClip >= 0) // ГЋГ°ГіГ¦ГЁГҐ ГЁГ¬ГҐГҐГІ Г®ГЎГ®Г©Г¬Гі (ГЇГЁГ±ГІГ®Г«ГҐГІГ» ГЁ ГІ.ГЇ)
 		{
 			switch(iWeapon)
 			{
@@ -1082,7 +1078,7 @@ handle_report(id) // Репорт о состоянии игрока
 					sWeapon, iClip, iAmmo, iHealth, iArmor, LGstr)
 			}
 		}
-		else // Оружие без обоймы (лом и т.п.)
+		else // ГЋГ°ГіГ¦ГЁГҐ ГЎГҐГ§ Г®ГЎГ®Г©Г¬Г» (Г«Г®Г¬ ГЁ ГІ.ГЇ.)
 		{
 			switch(iWeapon)
 			{
@@ -1565,7 +1561,7 @@ public fw_PlayerKilled(victim, killer, shouldgib)
 	{
 		inflictor = pev(victim, pev_dmg_inflictor); weaponId = 0
 		
-		if(killer == inflictor) // Вычисляем ID оружия
+		if(killer == inflictor) // Г‚Г»Г·ГЁГ±Г«ГїГҐГ¬ ID Г®Г°ГіГ¦ГЁГї
 			weaponId = get_user_weapon(killer)
 		else
 		{
@@ -1577,13 +1573,13 @@ public fw_PlayerKilled(victim, killer, shouldgib)
 			TrieGetCell(g_WeaponNames, classname, weaponId)
 		}
 		
-		// Узнаем место попадания
+		// Г“Г§Г­Г ГҐГ¬ Г¬ГҐГ±ГІГ® ГЇГ®ГЇГ Г¤Г Г­ГЁГї
 		iHitPlace = get_pdata_int(victim, g_Offsets[LAST_HIT_GROUP])
 		
 		if(get_pcvar_num(g_logCvar) == 2)
 			HLXCE_log(killer, victim, status, iHitPlace, weaponId, origin2, origin1)
 	}	
-	else //суицид
+	else //Г±ГіГЁГ¶ГЁГ¤
 	{
 		g_MapPlayersStats[victim][STATS_DEATHS] ++
 		g_RespawnPlayersStats[victim][STATS_DEATHS] ++
@@ -1600,7 +1596,7 @@ public fw_PlayerKilled(victim, killer, shouldgib)
 		return HAM_IGNORED
 	}
 	
-	switch(weaponId) // Обновляем статистику оружия
+	switch(weaponId) // ГЋГЎГ­Г®ГўГ«ГїГҐГ¬ Г±ГІГ ГІГЁГ±ГІГЁГЄГі Г®Г°ГіГ¦ГЁГї
 	{
 		//case HLW_TANK: { }
 		
@@ -1623,7 +1619,7 @@ public fw_PlayerKilled(victim, killer, shouldgib)
 	g_VictimsWeapon[killer][victim][0] = weaponId
 	g_AttackersWeapon[victim][killer][0] = weaponId
 
-	if(iHitPlace == HIT_HEAD) // Хэдшот
+	if(iHitPlace == HIT_HEAD) // Г•ГЅГ¤ГёГ®ГІ
 	{
 		g_MapWeaponsStats[killer][weaponId][STATS_HEADSHOTS] ++
 		g_RespawnWeaponsStats[killer][weaponId][STATS_HEADSHOTS] ++
@@ -1904,12 +1900,12 @@ public fw_AlertMessage(AlertType: type, message[])
 	return FMRES_IGNORED
 }
 
-public fwPlaybackEvent(flags, invoker, eventid) // Считаем выстрелы
+public fwPlaybackEvent(flags, invoker, eventid) // Г‘Г·ГЁГІГ ГҐГ¬ ГўГ»Г±ГІГ°ГҐГ«Г»
 {
 	if (!(g_guns_eventids_bitsum & (1<<eventid)) || !(1 <= invoker <= g_maxPlayers))
 		return FMRES_IGNORED	
 	
-	switch(eventid) // Эвенты общие для всех модов
+	switch(eventid) // ГќГўГҐГ­ГІГ» Г®ГЎГ№ГЁГҐ Г¤Г«Гї ГўГ±ГҐГµ Г¬Г®Г¤Г®Гў
 	{
 		case 1..2:
 		{
@@ -1973,7 +1969,7 @@ public fwPlaybackEvent(flags, invoker, eventid) // Считаем выстрелы
 		}
 	}
 	
-	switch(g_MOD) // Спец эвенты
+	switch(g_MOD) // Г‘ГЇГҐГ¶ ГЅГўГҐГ­ГІГ»
 	{
 		case OP4:
 		{
@@ -2097,17 +2093,17 @@ get_mine_owner(ent)
 	return ent
 }
 
-hl_get_user_weapon_ent(client) // Возвращает ИД энтити (weapon entityid) оружия, которое в данный момент у игрока
+hl_get_user_weapon_ent(client) // Г‚Г®Г§ГўГ°Г Г№Г ГҐГІ Г€Г„ ГЅГ­ГІГЁГІГЁ (weapon entityid) Г®Г°ГіГ¦ГЁГї, ГЄГ®ГІГ®Г°Г®ГҐ Гў Г¤Г Г­Г­Г»Г© Г¬Г®Г¬ГҐГ­ГІ Гі ГЁГЈГ°Г®ГЄГ 
 {
 	return get_pdata_cbase(client, g_Offsets[ACTIVEITEM], EXTRAOFFSET)
 }
 
-hl_get_weapon_ammo(entity) // Возвращает кол-во патронов в обойме у оружия (на входе weapon entityid)
+hl_get_weapon_ammo(entity) // Г‚Г®Г§ГўГ°Г Г№Г ГҐГІ ГЄГ®Г«-ГўГ® ГЇГ ГІГ°Г®Г­Г®Гў Гў Г®ГЎГ®Г©Г¬ГҐ Гі Г®Г°ГіГ¦ГЁГї (Г­Г  ГўГµГ®Г¤ГҐ weapon entityid)
 {
 	return get_pdata_int(entity, g_Offsets[WEAPONCLIP], EXTRAOFFSET_WEAPONS)
 }
 
-hl_get_user_bpammo(client, weapon) // Возвращает кол-во патронов в запасе у игрока по ИД оружия (HLW_*)
+hl_get_user_bpammo(client, weapon) // Г‚Г®Г§ГўГ°Г Г№Г ГҐГІ ГЄГ®Г«-ГўГ® ГЇГ ГІГ°Г®Г­Г®Гў Гў Г§Г ГЇГ Г±ГҐ Гі ГЁГЈГ°Г®ГЄГ  ГЇГ® Г€Г„ Г®Г°ГіГ¦ГЁГї (HLW_*)
 {
 	return get_pdata_int(client, _HLW_to_offset(weapon), EXTRAOFFSET)
 }
@@ -2151,7 +2147,7 @@ hl_get_wpnlogname(weapid, name[], len)
 	}
 }
 
-bool:hl_is_user_spectator(client) // Игрок спектатор?
+bool:hl_is_user_spectator(client) // Г€ГЈГ°Г®ГЄ Г±ГЇГҐГЄГІГ ГІГ®Г°?
 {
 	if(pev(client, pev_iuser1) || pev(client, pev_iuser2))
 		return true
@@ -2227,7 +2223,7 @@ hl_get_user_armor(client)
 	return floatround(armorvalue)
 }
 
-_HLW_to_offset(HLW_) // или OP4_
+_HLW_to_offset(HLW_) // ГЁГ«ГЁ OP4_
 {
 	switch(HLW_)
 	{
@@ -2252,7 +2248,7 @@ _HLW_to_offset(HLW_) // или OP4_
 	return 0
 }
 
-set_mod_offsets(MOD) // Загружаем нужные оффсеты
+set_mod_offsets(MOD) // Г‡Г ГЈГ°ГіГ¦Г ГҐГ¬ Г­ГіГ¦Г­Г»ГҐ Г®ГґГґГ±ГҐГІГ»
 {
 	new offset, i
 	switch(MOD)
@@ -2281,7 +2277,7 @@ set_mod_offsets(MOD) // Загружаем нужные оффсеты
 			
 			g_Offsets[WEAPONCLIP] = 43
 			g_Offsets[LAST_HIT_GROUP] = 93
-			g_Offsets[ACTIVEITEM] = 350 // или 351 xD
+			g_Offsets[ACTIVEITEM] = 350 // ГЁГ«ГЁ 351 xD
 			
 			for(i = AMMO_SHOTGUN; i <= AMMO_M40A1; i++)
 				g_Offsets[i] = offset++
@@ -2303,7 +2299,7 @@ set_mod_offsets(MOD) // Загружаем нужные оффсеты
 			server_print("[lambda_core] Offsets for Adrenaline Gamer loaded")
 		}
 		
-		case MINIAG: // у АГ и миниАГ одинаковые оффсеты =D
+		case MINIAG: // Гі ГЂГѓ ГЁ Г¬ГЁГ­ГЁГЂГѓ Г®Г¤ГЁГ­Г ГЄГ®ГўГ»ГҐ Г®ГґГґГ±ГҐГІГ» =D
 		{
 			g_MOD = MINIAG; offset = 305
 			
@@ -2631,7 +2627,7 @@ RANKS_LOAD_FROM_FILE()
 			HashSetArray(g_TrieStats, uniqueid, stats, sizeof stats)
 			HashSetArray(g_TrieBodyhits, uniqueid, bodyhits, sizeof bodyhits)
 		}
-		else // Если файл статы от старой версии плагина, то читаем его чуток по другому
+		else // Г…Г±Г«ГЁ ГґГ Г©Г« Г±ГІГ ГІГ» Г®ГІ Г±ГІГ Г°Г®Г© ГўГҐГ°Г±ГЁГЁ ГЇГ«Г ГЈГЁГ­Г , ГІГ® Г·ГЁГІГ ГҐГ¬ ГҐГЈГ® Г·ГіГІГ®ГЄ ГЇГ® Г¤Г°ГіГЈГ®Г¬Гі
 		{
 			parse(_data, uniqueid, charsmax(uniqueid), rankdata, charsmax(rankdata))
 			
@@ -2676,7 +2672,7 @@ RANKS_LOAD_FROM_FILE()
 	server_print("[lambda_core] Loaded %d ranks", ArraySize(g_ArrayAuth))
 }		
 
-RANKS_SAVE_TO_FILE() // Сохраняем ранки в файл
+RANKS_SAVE_TO_FILE() // Г‘Г®ГµГ°Г Г­ГїГҐГ¬ Г°Г Г­ГЄГЁ Гў ГґГ Г©Г«
 {
 	new vault = fopen(g_DataFile, "w+")
 	if(!vault) return	
@@ -2720,7 +2716,7 @@ RANKS_SAVE_TO_FILE() // Сохраняем ранки в файл
 	fclose(vault)
 }
 
-public RANKS_SORTING(Array:Uniqueid, Item1, Item2) // Сортировка ранков
+public RANKS_SORTING(Array:Uniqueid, Item1, Item2) // Г‘Г®Г°ГІГЁГ°Г®ГўГЄГ  Г°Г Г­ГЄГ®Гў
 {
 	new uID[32], stats[STATS], kpd1, kpd2
 	
@@ -2875,7 +2871,7 @@ public getPing(id)
 	++g_pingCount[id]
 }
 
-handle_info(id) // Информация о плагине
+handle_info(id) // Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї Г® ГЇГ«Г ГЈГЁГ­ГҐ
 {
 	new motd[MAX_BUFFER_LENGTH], len
 	
