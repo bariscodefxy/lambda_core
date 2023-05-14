@@ -120,5 +120,5 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [stars-url]: https://github.com/bariscodefxy/lambda_core/stargazers
 [issues-shield]: https://img.shields.io/github/issues/bariscodefxy/lambda_core.svg?style=for-the-badge
 [issues-url]: https://github.com/bariscodefxy/lambda_core/issues
-[license-shield]: https://img.shields.io/github/licensebariscodefxy/lambda_core.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/bariscodefxy/lambda_core.svg?style=for-the-badge
 [license-url]: https://github.com/bariscodefxy/lambda_core/blob/master/LICENSE.txt
